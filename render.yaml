@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: rag-doc-qa
+    runtime: python
+    plan: free              # 輕量版可在 512MB 執行；文件很大或多人同時使用時請改 standard
+    buildCommand: pip install -r requirements.txt && python prefetch.py
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips="*"
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: GROQ_API_KEY
+        sync: false          # 在 Render 後台填入；留空則使用者需自行輸入 Key
+      - key: EMBED_MODEL
+        value: sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
+      - key: FASTEMBED_CACHE_PATH
+        value: /opt/render/project/src/.fastembed_cache
+      - key: OMP_NUM_THREADS
+        value: "1"

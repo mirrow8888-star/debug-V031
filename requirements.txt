@@ -1,0 +1,10 @@
+gradio>=5.20,<6
+fastapi
+uvicorn[standard]
+groq
+pypdf
+python-docx
+fastembed
+scikit-learn
+numpy
+Pillow
